@@ -43,22 +43,24 @@ object GoTorrent {
    
    //  4) whivh client did most Http Requests
    
-   println(rdd.filter(_.retrival_Stage =="api_client")
+   val httpreq=rdd.filter(_.retrival_Stage =="api_client")
               .keyBy(_.download_Id)
               .mapValues(x=>1)
               .reduceByKey(_+_)
               .sortBy(x=>x._2,false)
-              .take(3))
+              .take(3)
+      httpreq.foreach(println)
    
     // 5)  which client did most failed Http Requessts
               
-     println(rdd.filter(_.retrival_Stage=="api_client")
+     val httpfail=rdd.filter(_.retrival_Stage=="api_client")
                 .filter(_.rest.startsWith("Failed"))
                 .keyBy(_.download_Id)
                 .mapValues(x=>1)
                 .reduceByKey(_+_)
                 .sortBy(x=>x._2, false)
-                .take(3))
+                .take(3)
+      httpfail.foreach(prinltn)
               
             
      
