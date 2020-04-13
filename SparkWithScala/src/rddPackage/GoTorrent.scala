@@ -59,8 +59,18 @@ object GoTorrent {
                 .mapValues(x=>1)
                 .reduceByKey(_+_)
                 .sortBy(x=>x._2, false)
-                .take(3)
+                .take(4)
       httpfail.foreach(prinltn)
+      
+      // 6) which access keys are failing most often
+      
+      rdd.filter(_.rest.startsWith("Failed")).
+    filter(_.rest.contains("Access: ")).
+    mkString(" ").
+    split(":").
+    reduceByKey(_+_).sortBy(_._2,false).take(5)
+ 
+      
               
             
      
